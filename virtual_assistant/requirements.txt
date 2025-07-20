@@ -1,0 +1,12 @@
+vosk
+pyttsx3
+pyaudio
+spacy
+transformers
+torch
+duckduckgo-search
+tk
+psutil
+pyautogui
+adbutils
+schedule
