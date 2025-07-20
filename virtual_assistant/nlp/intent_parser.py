@@ -25,6 +25,13 @@ try:
                 return "send_sms", {"number": number.strip(), "message": message.strip()}
             except Exception:
                 return "send_sms", {"number": "", "message": ""}
+        if "remind me at" in text:
+            try:
+                rest = text.split("remind me at", 1)[1].strip()
+                time_part, message = rest.split("to", 1)
+                return "set_reminder", {"time": time_part.strip(), "message": message.strip()}
+            except Exception:
+                return "set_reminder", {"time": "", "message": ""}
         if "cpu info" in text:
             return "cpu_info", {}
         if "ram info" in text or "memory info" in text:
@@ -33,6 +40,12 @@ try:
             return "disk_info", {}
         if "exit" in text or "quit" in text:
             return "exit", {}
+        if "turn on light" in text:
+            return "turn_on_light", {}
+        if "turn off light" in text:
+            return "turn_off_light", {}
+        if "temperature" in text:
+            return "get_temperature", {}
         # Use sentiment as a fallback intent
         if label == "POSITIVE":
             return "greet", {"text": text}
@@ -62,6 +75,13 @@ except Exception as e:
                 return "send_sms", {"number": number.strip(), "message": message.strip()}
             except Exception:
                 return "send_sms", {"number": "", "message": ""}
+        if "remind me at" in text:
+            try:
+                rest = text.split("remind me at", 1)[1].strip()
+                time_part, message = rest.split("to", 1)
+                return "set_reminder", {"time": time_part.strip(), "message": message.strip()}
+            except Exception:
+                return "set_reminder", {"time": "", "message": ""}
         if "cpu info" in text:
             return "cpu_info", {}
         if "ram info" in text or "memory info" in text:
@@ -70,4 +90,10 @@ except Exception as e:
             return "disk_info", {}
         if "exit" in text or "quit" in text:
             return "exit", {}
+        if "turn on light" in text:
+            return "turn_on_light", {}
+        if "turn off light" in text:
+            return "turn_off_light", {}
+        if "temperature" in text:
+            return "get_temperature", {}
         return "unknown", {"text": text}
