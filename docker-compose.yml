@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  luna-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      # Example environment variables for the API
+      # In a real setup, these would be managed securely (e.g., Kubernetes secrets, Vault)
+      FLASK_APP: api/main.py
+      FLASK_ENV: development # Change to production for deployment
+      # Placeholder for actual API keys
+      OPENAI_API_KEY: your_openai_api_key
+      GOOGLE_VISION_API_KEY: your_google_vision_api_key
+      SERP_API_KEY: your_serp_api_key
+      DATABASE_URL: postgresql://user:password@host:port/database # Replace with your Neon DB URL
+    volumes:
+      - .:/app # Mount the current directory into the container for live updates during development
+    depends_on:
+      # If you had a separate database service in Docker Compose, it would go here
+      # - luna-db
+      - luna-sandbox # Ensure sandbox is ready if API interacts with it directly
+
+  luna-sandbox:
+    build:
+      context: .
+      dockerfile: evolution/Dockerfile.sandbox
+    container_name: luna-evolution-sandbox
+    environment:
+      # Environment variables for the sandbox controller
+      SANDBOX_IMAGE: luna-sandbox-env:latest # Image used for isolated execution
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socket for sandbox to manage containers
+    # No ports exposed for the sandbox controller itself, as it's an internal service
+    # If you want to run the sandbox controller as a separate process, you might expose a port.
+    # For this setup, it's assumed to be managed internally or via API calls.
+
+  # Example of a database service if you were running it locally with Docker
+  # luna-db:
+  #   image: postgres:14-alpine
+  #   restart: always
+  #   environment:
+  #     POSTGRES_DB: luna_db
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: password
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - db_data:/var/lib/postgresql/data
+  #     - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql # Initialize DB schema
+
+# volumes:
+#   db_data: # For persistent database data
