@@ -46,6 +46,27 @@ try:
             return "turn_off_light", {}
         if "temperature" in text:
             return "get_temperature", {}
+        if "copy" in text and "to clipboard" in text:
+            try:
+                to_copy = text.split("copy",1)[1].split("to clipboard")[0].strip()
+                return "copy_to_clipboard", {"text": to_copy}
+            except Exception:
+                return "copy_to_clipboard", {"text": ""}
+        if "paste clipboard" in text or "paste from clipboard" in text:
+            return "paste_from_clipboard", {}
+        if "read clipboard" in text:
+            return "read_clipboard", {}
+        if text.startswith("play "):
+            file = text.replace("play ", "").strip()
+            return "play_media", {"file": file}
+        if "pause media" in text:
+            return "pause_media", {}
+        if "stop media" in text:
+            return "stop_media", {}
+        if "add event" in text:
+            return "add_event", {}
+        if "what are my events" in text or "show calendar" in text:
+            return "get_events", {}
         # Use sentiment as a fallback intent
         if label == "POSITIVE":
             return "greet", {"text": text}
@@ -96,4 +117,25 @@ except Exception as e:
             return "turn_off_light", {}
         if "temperature" in text:
             return "get_temperature", {}
+        if "copy" in text and "to clipboard" in text:
+            try:
+                to_copy = text.split("copy",1)[1].split("to clipboard")[0].strip()
+                return "copy_to_clipboard", {"text": to_copy}
+            except Exception:
+                return "copy_to_clipboard", {"text": ""}
+        if "paste clipboard" in text or "paste from clipboard" in text:
+            return "paste_from_clipboard", {}
+        if "read clipboard" in text:
+            return "read_clipboard", {}
+        if text.startswith("play "):
+            file = text.replace("play ", "").strip()
+            return "play_media", {"file": file}
+        if "pause media" in text:
+            return "pause_media", {}
+        if "stop media" in text:
+            return "stop_media", {}
+        if "add event" in text:
+            return "add_event", {}
+        if "what are my events" in text or "show calendar" in text:
+            return "get_events", {}
         return "unknown", {"text": text}

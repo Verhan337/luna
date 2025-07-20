@@ -1,5 +1,9 @@
 import os
 from utils import system_info
+try:
+    import pyperclip
+except ImportError:
+    pyperclip = None
 
 def handle(intent, entities):
     if intent == "create_file":
@@ -36,4 +40,18 @@ def handle(intent, entities):
         return system_info.get_ram_info()
     elif intent == "disk_info":
         return system_info.get_disk_info()
+    elif intent == "copy_to_clipboard":
+        if pyperclip:
+            text = entities.get("text", "")
+            pyperclip.copy(text)
+            return "Copied to clipboard."
+        return "Clipboard not available."
+    elif intent == "paste_from_clipboard":
+        if pyperclip:
+            return f"Clipboard: {pyperclip.paste()}"
+        return "Clipboard not available."
+    elif intent == "read_clipboard":
+        if pyperclip:
+            return f"Clipboard: {pyperclip.paste()}"
+        return "Clipboard not available."
     return "Unknown PC control command."
