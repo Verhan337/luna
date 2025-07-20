@@ -1,4 +1,10 @@
-def speak(text):
-    # TODO: Implement pyttsx3-based speech synthesis
-    # For now, use print as a stub
-    print(f"Assistant: {text}")
+try:
+    import pyttsx3
+    engine = pyttsx3.init()
+    def speak(text):
+        print(f"Assistant: {text}")
+        engine.say(text)
+        engine.runAndWait()
+except Exception as e:
+    def speak(text):
+        print(f"Assistant: {text}")
