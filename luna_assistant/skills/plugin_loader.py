@@ -1,12 +1,12 @@
 import importlib
 import os
-from skills import pc_control, web_actions, phone_control, smart_home, scheduler, media_control, calendar
+from skills import pc_control, web_actions, phone_control, smart_home, scheduler, media_control, calendar, crypto, banking
 
 SKILLS_DIR = os.path.dirname(__file__)
 
 def load_skills():
     # In the future, dynamically load all skills
-    return {"pc_control": pc_control, "web_actions": web_actions, "phone_control": phone_control, "smart_home": smart_home, "scheduler": scheduler, "media_control": media_control, "calendar": calendar}
+    return {"pc_control": pc_control, "web_actions": web_actions, "phone_control": phone_control, "smart_home": smart_home, "scheduler": scheduler, "media_control": media_control, "calendar": calendar, "crypto": crypto, "banking": banking}
 
 def load_plugins():
     plugins = {}
@@ -36,4 +36,8 @@ def route_command(intent, entities, skills):
         return skills["media_control"].handle(intent, entities)
     if intent in ["add_event", "get_events"]:
         return skills["calendar"].handle(intent, entities)
+    if intent in ["add_wallet", "get_balance", "send_eth", "swap_tokens"]:
+        return skills["crypto"].handle(intent, entities)
+    if intent in ["add_bank_account", "get_balance", "send_money"]:
+        return skills["banking"].handle(intent, entities)
     return "Sorry, I don't know how to do that yet."

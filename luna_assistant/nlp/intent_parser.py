@@ -67,6 +67,30 @@ try:
             return "add_event", {}
         if "what are my events" in text or "show calendar" in text:
             return "get_events", {}
+        if "add wallet" in text:
+            return "add_wallet", {}
+        if "get crypto balance" in text or "get eth balance" in text:
+            return "get_balance", {"type": "crypto"}
+        if "send eth to" in text:
+            try:
+                rest = text.split("send eth to", 1)[1].strip()
+                to, amount = rest.split("amount", 1)
+                return "send_eth", {"to": to.strip(), "amount": amount.strip()}
+            except Exception:
+                return "send_eth", {"to": "", "amount": ""}
+        if "swap tokens" in text:
+            return "swap_tokens", {}
+        if "add bank account" in text:
+            return "add_bank_account", {}
+        if "get bank balance" in text:
+            return "get_balance", {"type": "bank"}
+        if "send money to" in text:
+            try:
+                rest = text.split("send money to", 1)[1].strip()
+                to, amount = rest.split("amount", 1)
+                return "send_money", {"to": to.strip(), "amount": amount.strip()}
+            except Exception:
+                return "send_money", {"to": "", "amount": ""}
         # Use sentiment as a fallback intent
         if label == "POSITIVE":
             return "greet", {"text": text}
@@ -138,4 +162,28 @@ except Exception as e:
             return "add_event", {}
         if "what are my events" in text or "show calendar" in text:
             return "get_events", {}
+        if "add wallet" in text:
+            return "add_wallet", {}
+        if "get crypto balance" in text or "get eth balance" in text:
+            return "get_balance", {"type": "crypto"}
+        if "send eth to" in text:
+            try:
+                rest = text.split("send eth to", 1)[1].strip()
+                to, amount = rest.split("amount", 1)
+                return "send_eth", {"to": to.strip(), "amount": amount.strip()}
+            except Exception:
+                return "send_eth", {"to": "", "amount": ""}
+        if "swap tokens" in text:
+            return "swap_tokens", {}
+        if "add bank account" in text:
+            return "add_bank_account", {}
+        if "get bank balance" in text:
+            return "get_balance", {"type": "bank"}
+        if "send money to" in text:
+            try:
+                rest = text.split("send money to", 1)[1].strip()
+                to, amount = rest.split("amount", 1)
+                return "send_money", {"to": to.strip(), "amount": amount.strip()}
+            except Exception:
+                return "send_money", {"to": "", "amount": ""}
         return "unknown", {"text": text}
